@@ -1,2 +1,2 @@
 # solidworks-makra
-export inport dat
+Export and import data
