@@ -18,9 +18,10 @@ Sub main()
         Exit Sub
     End If
 
-    Dim height As Double
-    If Not AskHeight(psi, height) Then Exit Sub
+    Dim height As Double, fontName As String, isBold As Boolean
+    If Not AskTextOptions(psi, height, fontName, isBold) Then Exit Sub
     Debug.Print "Height (m): " & height
+    Debug.Print "Font: " & fontName & ", Bold: " & isBold
 
     face.Select False
     mdl.InsertSketch2 True
@@ -37,7 +38,8 @@ Sub main()
     Set st = mdl.SketchManager.CreateText2(psi, cx, cy, cz, height, 0)
     With st.IGetTextFormat(0)
         .CharHeight = height
-        .Bold = False
+        .TypeFaceName = fontName
+        .Bold = isBold
         .Italic = False
         .Underline = False
         st.SetTextFormat 0, .Clone
@@ -60,13 +62,16 @@ Function GetPlanarFace(sel As SelectionMgr) As Face2
     End If
 End Function
 
-Function AskHeight(code As String, ByRef h As Double) As Boolean
+Function AskTextOptions(code As String, ByRef h As Double, _
+    ByRef fontName As String, ByRef bold As Boolean) As Boolean
     Dim frm As PSIForm: Set frm = New PSIForm
     frm.txtPSI.Text = code
     frm.Show vbModal
     If frm.Tag = "OK" Then
         h = Val(frm.txtHeight.Text) / 1000#
-        AskHeight = True
+        fontName = frm.txtFont.Text
+        bold = frm.chkBold.Value <> 0
+        AskTextOptions = True
     End If
     Unload frm
 End Function

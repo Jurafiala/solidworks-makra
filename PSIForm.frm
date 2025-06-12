@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.UserForm PSIForm
    Caption         =   "PSI Text"
-   ClientHeight    =   1620
+   ClientHeight    =   1980
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   2400
@@ -22,13 +22,29 @@ Begin VB.UserForm PSIForm
       Top             =   420
       Width           =   2280
    End
+   Begin VB.TextBox txtFont
+      Height          =   300
+      Left            =   60
+      TabIndex        =   2
+      Text            =   "Arial"
+      Top             =   780
+      Width           =   2280
+   End
+   Begin VB.CheckBox chkBold
+      Caption         =   "Bold"
+      Height          =   300
+      Left            =   60
+      TabIndex        =   3
+      Top             =   1080
+      Width           =   2280
+   End
    Begin VB.CommandButton cmdOK
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   360
       Left            =   60
-      TabIndex        =   2
-      Top             =   780
+      TabIndex        =   4
+      Top             =   1500
       Width           =   900
    End
    Begin VB.CommandButton cmdCancel
@@ -36,8 +52,8 @@ Begin VB.UserForm PSIForm
       Caption         =   "Cancel"
       Height          =   360
       Left            =   1380
-      TabIndex        =   3
-      Top             =   780
+      TabIndex        =   5
+      Top             =   1500
       Width           =   900
    End
 End
