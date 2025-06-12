@@ -24,7 +24,8 @@ Sub main()
 
     face.Select False
     mdl.InsertSketch2 True
-    ConvertFaceEdges face
+    Dim segs As Variant
+    segs = ConvertFaceEdges(face)
     Debug.Print "Sketch started and edges converted"
 
     Dim box As Variant: box = face.GetBox
@@ -46,6 +47,8 @@ Sub main()
         .Name = "PSI_Block"
     End With
     Debug.Print "PSI_Block inserted"
+    DeleteSegments segs
+    Debug.Print "Converted edges removed"
 End Sub
 
 Function GetPlanarFace(sel As SelectionMgr) As Face2
@@ -68,7 +71,7 @@ Function AskHeight(code As String, ByRef h As Double) As Boolean
     Unload frm
 End Function
 
-Sub ConvertFaceEdges(f As Face2)
+Function ConvertFaceEdges(f As Face2) As Variant
     Dim edges As Variant: edges = f.GetEdges
     Dim i As Long
     For i = LBound(edges) To UBound(edges)
@@ -77,4 +80,18 @@ Sub ConvertFaceEdges(f As Face2)
     Next i
     Application.SldWorks.ActiveDoc.SketchManager.SketchUseEdge2 1
     Application.SldWorks.ActiveDoc.ClearSelection2 True
+    ConvertFaceEdges = Application.SldWorks.ActiveDoc.ActiveSketch.GetSketchSegments
+End Function
+
+Sub DeleteSegments(segs As Variant)
+    If IsEmpty(segs) Then Exit Sub
+    Dim mdl As ModelDoc2: Set mdl = Application.SldWorks.ActiveDoc
+    Dim ext As ModelDocExtension: Set ext = mdl.Extension
+    Dim i As Long
+    For i = LBound(segs) To UBound(segs)
+        Dim s As SketchSegment: Set s = segs(i)
+        s.Select i = 0
+    Next i
+    ext.DeleteSelection2 0
+    mdl.ClearSelection2 True
 End Sub
